@@ -23,3 +23,23 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t lyric-motion-studio .
+
+      - name: Smoke test container
+        run: |
+          docker run -d --name lms -p 5099:5099 lyric-motion-studio
+          ok=""
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:5099/api/health > /tmp/health.json; then ok="yes"; break; fi
+            sleep 2
+          done
+          cat /tmp/health.json || true
+          docker logs lms | tail -30
+          test "$ok" = "yes"
