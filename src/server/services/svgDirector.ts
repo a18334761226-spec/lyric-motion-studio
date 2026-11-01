@@ -5,6 +5,7 @@ import { projectDir } from '../config';
 import { getSettings } from './settings';
 import { detectFfmpeg, runCommand } from '../config';
 import { renderSvgToPng } from './svgRender';
+import { logLlmUsage } from './llm';
 
 /**
  * 通用图像层：内容 profile → 逐镜 ArtDirection → DeepSeek 直接绘制 SVG。
@@ -43,6 +44,8 @@ function model(): string {
   return s.deepseekModel || 'deepseek-flash';
 }
 
+let activeProjectId = '';
+
 async function chat(system: string, user: string, maxTokens = 12000): Promise<string> {
   const key = apiKey();
   if (!key) throw new Error('未配置 DeepSeek Key');
@@ -70,6 +73,10 @@ async function chat(system: string, user: string, maxTokens = 12000): Promise<st
       if (r.ok) {
         const j = JSON.parse(txt);
         if (j.choices?.[0]?.finish_reason === 'length') throw new Error('output truncated');
+        logLlmUsage('逐镜画面 SVG', activeProjectId, {
+          promptTokens: j.usage?.prompt_tokens,
+          completionTokens: j.usage?.completion_tokens,
+        });
         return j.choices[0].message.content as string;
       }
     } catch {
@@ -141,7 +148,7 @@ function sanitizeSvg(raw: string): string | undefined {
   if (!m) return undefined;
   let svg = m[0]
     .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, '')
+    .replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, '');
   if (!/xmlns=/.test(svg)) svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
   if (!/viewBox=/.test(svg)) svg = svg.replace('<svg', '<svg viewBox="0 0 1080 1920"');
   if (!/<\/svg>\s*$/.test(svg)) svg = svg.trimEnd() + '</svg>';
@@ -149,7 +156,11 @@ function sanitizeSvg(raw: string): string | undefined {
 }
 
 /** 每镜：按内容 profile + 本段文本，让 DeepSeek 画一镜 SVG */
-export async function drawShotSvg(project: Project, shot: Shot, text: string): Promise<{ svg: string; focuses?: Shot['focuses'] }> {
+export async function drawShotSvg(project: Project, shot: Shot, text: string): Promise<{
+  svg: string;
+  focuses?: Shot['focuses'];
+}> {
+  activeProjectId = project.id;
   const profile = await getContentProfile(project);
   const shots = project.storyboard?.shots ?? [];
   const prev = shots[shot.index - 1]?.subtitle ?? '';
@@ -211,6 +222,7 @@ export async function drawShotSvg(project: Project, shot: Shot, text: string): P
 
 /** 封面：按内容自动生成信息图风格海报（1080×1920） */
 export async function drawCoverPng(project: Project, outPath: string): Promise<void> {
+  activeProjectId = project.id;
   const profile = await getContentProfile(project);
   const title = (project.source.title || project.source.topic || '视频').slice(0, 14);
   const topic = (project.source.topic || '').slice(0, 20);

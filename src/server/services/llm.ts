@@ -1,5 +1,7 @@
 import { getSettings, llmProvider } from './settings';
 import { addActivity } from '../db';
+import fsx from 'node:fs';
+import pathx from 'node:path';
 
 export interface LlmUsage {
   promptTokens?: number;
@@ -104,6 +106,27 @@ async function chat(messages: ChatMessage[], opts: { temperature?: number; maxTo
   }
 }
 
+/** 记录每次 LLM 调用的 token 用量，用于成本实测 */
+export function logLlmUsage(label: string, projectId: string | undefined, usage?: LlmUsage): void {
+  if (!usage || (!usage.promptTokens && !usage.completionTokens)) return;
+  try {
+    const dir = pathx.join(process.cwd(), 'data', 'logs');
+    fsx.mkdirSync(dir, { recursive: true });
+    fsx.appendFileSync(
+      pathx.join(dir, 'llm-usage.jsonl'),
+      JSON.stringify({
+        at: new Date().toISOString(),
+        label,
+        projectId: projectId ?? null,
+        prompt: usage.promptTokens ?? 0,
+        completion: usage.completionTokens ?? 0,
+      }) + '\n',
+    );
+  } catch {
+    /* 统计失败不影响主流程 */
+  }
+}
+
 export interface JsonTaskOptions<T> {
   system: string;
   user: string;
@@ -139,6 +162,7 @@ export async function llmJson<T>(opts: JsonTaskOptions<T>): Promise<LlmResult<T>
       if (parsed === null) throw new Error('返回的 JSON 无法解析');
       const validated = opts.validate ? opts.validate(parsed) : (parsed as T);
       if (validated === null) throw new Error('返回 JSON 结构不符合预期');
+      logLlmUsage(opts.label, opts.projectId, usage);
       return { data: validated, provider: 'deepseek', model: s.deepseekModel, usage };
     } catch (err) {
       lastError = (err as Error).message || String(err);
@@ -177,6 +201,7 @@ export async function llmText(opts: TextTaskOptions): Promise<LlmResult<string>>
       ],
       { temperature: opts.temperature ?? 0.7, maxTokens: opts.maxTokens ?? 2000, json: false },
     );
+    logLlmUsage(opts.label, opts.projectId, usage);
     return { data: content.trim(), provider: 'deepseek', model: s.deepseekModel, usage };
   } catch (err) {
     const message = (err as Error).message || String(err);

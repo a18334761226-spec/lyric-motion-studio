@@ -49,6 +49,21 @@ Basis: **one 3-minute vertical video ≈ 25 shots / ~1,100 Chinese characters**,
 
 > Ballpark figures based on public list prices; they vary by provider, model version and usage. Only DeepSeek text tokens and local electricity are counted here — no manual review time.
 
+### Measured: what a 3-minute video actually costs
+
+Environment: regular CPU (no GPU), `deepseek-chat`, Edge-TTS, 1080×1920, 1,042 characters / 23 shots.
+
+| Metric | Measured |
+| --- | --- |
+| Output video | 2 min 59.7 s |
+| Generation time | ≈ 5.8 minutes (including 26 per-shot SVG calls) |
+| LLM calls | 29: analysis 1 / script trim 1 / per-shot frames 26 / music design 1 |
+| Tokens | 26,769 input + 92,728 output ≈ **119,497** |
+| Model cost | **≈ $0.11** (DeepSeek $0.28/M input + $1.10/M output, cache-miss rates) |
+| File size | 21.7 MB |
+
+> For comparison, 26 shots through a text-to-image API at $0.01–0.07 each would be $0.26–1.8 before retries. Per-shot frames account for 99% of output tokens — every frame is a full SVG written by the text model, not an image API call.
+
 ## Stack
 
 | Layer | Choice |

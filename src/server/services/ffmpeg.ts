@@ -214,10 +214,20 @@ export function buildAss(options: {
     const start = Math.max(item.start, lastEnd + 0.04);
     const end = Math.max(item.end, start + 0.5);
     lastEnd = end;
-    const text = wrapCjkLines(item.text.replace(/\n/g, ''), maxChars).map(escapeAss).join('\\N');
-    lines.push(
-      `Dialogue: 0,${assTime(start)},${assTime(end)},${styleName},,0,0,0,,${effect}${text}`,
-    );
+    // 长台词拆成多条短字幕，按时间轮播（每条最多 2 行）
+    const allLines = wrapCjkLines(item.text.replace(/\n/g, ''), maxChars);
+    const chunks: string[] = [];
+    for (let i = 0; i < allLines.length; i += 2) chunks.push(allLines.slice(i, i + 2).join('\\N'));
+    const totalChars = chunks.reduce((n, c) => n + c.replace(/\\N/g, '').length, 0) || 1;
+    let cursor = start;
+    for (const chunk of chunks) {
+      const share = ((chunk.replace(/\\N/g, '').length || 1) / totalChars) * (end - start);
+      const chunkEnd = Math.min(end, cursor + Math.max(0.8, share));
+      lines.push(
+        `Dialogue: 0,${assTime(cursor)},${assTime(chunkEnd)},${styleName},,0,0,0,,${effect}${chunk}`,
+      );
+      cursor = chunkEnd;
+    }
   }
   return lines.join('\n');
 }
