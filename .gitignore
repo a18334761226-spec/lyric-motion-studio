@@ -1,0 +1,29 @@
+# dependencies & build output
+node_modules/
+dist-server/
+public/build/
+
+# runtime data: projects, videos, SQLite DB, exports
+data/
+
+# local secrets
+.env
+.env.local
+.npmrc
+
+# logs
+*.log
+
+# screenshots / media assets (local only)
+screenshots/
+assets/music/
+assets/fonts/
+
+# editors & OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# package manager
+.pnpm-store/

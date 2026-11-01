@@ -1,0 +1,61 @@
+{
+  "name": "lyric-motion-studio",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AI 成片工作台：歌词 / 口播稿 / 历史 / 主题 → 逐镜 LLM SVG 画面、Edge-TTS 配音、ASS 字幕、封面与抖音发布包，本地 ffmpeg 渲染",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "node --import ./scripts/ts-loader.mjs --watch src/server/index.ts",
+    "dev:web": "node scripts/build-web.mjs --watch",
+    "build": "node scripts/build-web.mjs && node scripts/build-server.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "build:server": "node scripts/build-server.mjs",
+    "start": "node dist-server/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "smoke": "node --import ./scripts/ts-loader.mjs scripts/smoke.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
+    "axios": "^1.21.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "lucide-react": "^0.545.0",
+    "msedge-tts": "^2.1.1",
+    "nanoid": "^5.1.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.9.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai-video",
+    "text-to-video",
+    "deepseek",
+    "svg",
+    "ffmpeg",
+    "edge-tts",
+    "shorts",
+    "douyin",
+    "lyric-video"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-name/lyric-motion-studio"
+  },
+  "homepage": "https://github.com/your-name/lyric-motion-studio#readme",
+  "bugs": {
+    "url": "https://github.com/your-name/lyric-motion-studio/issues"
+  }
+}
