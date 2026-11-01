@@ -52,10 +52,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-name/lyric-motion-studio"
+    "url": "git+https://github.com/a18334761226-spec/lyric-motion-studio.git"
   },
-  "homepage": "https://github.com/your-name/lyric-motion-studio#readme",
+  "homepage": "https://github.com/a18334761226-spec/lyric-motion-studio#readme",
   "bugs": {
-    "url": "https://github.com/your-name/lyric-motion-studio/issues"
+    "url": "https://github.com/a18334761226-spec/lyric-motion-studio/issues"
   }
 }

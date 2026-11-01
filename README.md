@@ -47,7 +47,8 @@ source → research? → analysis → storyboard → prompts → images → voic
 需要：**Node.js ≥ 24**、**ffmpeg**（PATH 可用或设置 `FFMPEG_PATH`）、**Chrome / Edge**（用于 SVG 截图）。
 
 ```bash
-git clone <your-repo-url> lyric-motion-studio
+git clone https://github.com/a18334761226-spec/lyric-motion-studio.git
+cd lyric-motion-studio
 cd lyric-motion-studio
 npm install
 cp .env.example .env     # 可选：填 DEEPSEEK_API_KEY；不填会降级本地引擎
@@ -83,6 +84,7 @@ src/
   web/             React 控制台（控制台 / 新建成片 / 项目工作区 / 设置）
   shared/          类型与预设（默认语速、字幕、风格）
 scripts/           构建、开发、每日出片
+config/            默认选题库 topics.json
 public/            静态入口（构建产物 public/build）
 data/              运行时数据（项目、导出、SQLite）—— 已在 .gitignore
 ```

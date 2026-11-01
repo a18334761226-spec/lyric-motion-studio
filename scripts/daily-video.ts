@@ -76,7 +76,9 @@ async function api(method: string, p: string, body?: unknown): Promise<any> {
 }
 
 async function main(): Promise<void> {
-  const topics = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/topics.json'), 'utf8')) as { id: string; title: string; topic: string; angle: string }[];
+  const topicsFile = [path.join(ROOT, 'data/topics.json'), path.join(ROOT, 'config/topics.json')].find((f) => fs.existsSync(f));
+  if (!topicsFile) throw new Error('找不到选题库：请提供 data/topics.json 或 config/topics.json');
+  const topics = JSON.parse(fs.readFileSync(topicsFile, 'utf8')) as { id: string; title: string; topic: string; angle: string }[];
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
   const pick = custom?.topic
     ? { id: `custom-${Date.now()}`, title: (custom.title || custom.topic).slice(0, 14), topic: custom.topic, angle: custom.angle || '' }

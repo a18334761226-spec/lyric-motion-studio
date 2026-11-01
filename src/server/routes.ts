@@ -63,7 +63,8 @@ api.get('/health', async (_req, res) => {
 
 api.get('/daily/topics', (_req, res) => {
   try {
-    res.json(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/topics.json'), 'utf8')));
+    const file = [path.join(process.cwd(), 'data/topics.json'), path.join(process.cwd(), 'config/topics.json')].find((f) => fs.existsSync(f));
+    res.json(file ? JSON.parse(fs.readFileSync(file, 'utf8')) : []);
   } catch {
     res.json([]);
   }
