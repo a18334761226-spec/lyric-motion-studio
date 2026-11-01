@@ -139,6 +139,19 @@ npm start                # http://127.0.0.1:5099
 npm run dev              # 同时启动 API 与前端 watch
 ```
 
+## Docker（一条命令，不用装任何依赖）
+
+镜像内置 Node 24、ffmpeg、Chromium 与中文字体：
+
+```bash
+docker build -t lyric-motion-studio .
+docker run --rm -p 5099:5099 -v "$(pwd)/data:/app/data" lyric-motion-studio
+# Windows PowerShell： -v "${PWD}/data:/app/data"
+```
+
+打开 http://127.0.0.1:5099 。数据（项目、成片、数据库）落在挂载的 `data/` 目录。
+如果宿主已有 Chrome，也可以用 `CHROME_PATH` 指向它，镜像里的 Chromium 只用于兜底。
+
 ## 常用命令
 
 ```bash

@@ -122,6 +122,17 @@ npm start                # http://127.0.0.1:5099
 
 Development: `npm run dev`.
 
+## Docker (one command, no host dependencies)
+
+The image ships Node 24, ffmpeg, Chromium and CJK fonts:
+
+```bash
+docker build -t lyric-motion-studio .
+docker run --rm -p 5099:5099 -v "$(pwd)/data:/app/data" lyric-motion-studio
+```
+
+Open http://127.0.0.1:5099 . Projects, videos and the SQLite DB live in the mounted `data/` directory.
+
 ## Commands
 
 ```bash

@@ -103,7 +103,7 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: err.message || '服务器内部错误' });
 });
 
-const server = app.listen(PORT, '127.0.0.1', () => {
+const server = app.listen(PORT, process.env.HOST || '127.0.0.1', () => {
   seedDatabase();
   recoverInterruptedProjects();
   addActivity(null, 'info', '工作台启动');

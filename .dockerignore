@@ -1,0 +1,12 @@
+node_modules
+dist-server
+public/build
+data
+screenshots
+.pnpm-store
+.git
+.github
+*.log
+.env
+.env.local
+docs/samples/demo-60s.mp4
