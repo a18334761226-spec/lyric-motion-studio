@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Question / usage help
-    url: https://github.com/a18334761226-spec/lyric-motion-studio/discussions
+    url: https://github.com/a18334761226-spec/lyric-motion-studio/issues
     about: Ask how to set up ffmpeg / Chrome, or share your results.
   - name: Security report
     url: https://github.com/a18334761226-spec/lyric-motion-studio/security/advisories/new
