@@ -23,16 +23,31 @@ LLM 逐镜决定画面形式（信息图 / 文字卡 / 插画 / 示意图），�
 - **发布包**：成片 / 封面 / 抖音标题 / 简介 / 话题，页面内一键复制
 - **每日出片**：选题库轮换或自定义选题、自定义口播稿 → 自动建项目 → 渲染 → 导出发布包
 
+## 为什么便宜、也不用好硬件
+
+这是一个**没有生图模型、没有 GPU、没有云渲染**的方案：
+
+| 环节 | 常见做法 | 本项目 |
+| --- | --- | --- |
+| 画面 | 调文生图 API / 跑 Stable Diffusion | **DeepSeek 文本模型直接写完整 SVG**，再用 Chrome headless 截图 —— 没有一张图片 token，不需要显存 |
+| 配音 | 云端 TTS 按字数计费 | Edge-TTS，**免费** |
+| 配乐 | 素材库 / 版权音乐 | 本地程序化合成（可选 DeepSeek 设计参数），**免费** |
+| 渲染 | 云渲染 / 剪映会员 | 本机 ffmpeg，**免费** |
+| 硬件 | 至少 8–12GB 显存的显卡 | **纯 CPU 即可**，4–8GB 内存的普通笔记本 / 小主机能跑 |
+| 成本 | 一张图几分钱 × 几十镜 + 云渲染费 | 一支 3 分钟视频约 20–30 次**文本**调用（几万 token），按 `deepseek-chat` 价格通常只要**几分到几毛钱** |
+
+代价是渲染时间：普通 CPU 出一支 3 分钟成片约 5–10 分钟（主要是 ffmpeg 编码）。
+
 ## 技术栈
 
 | 层 | 选择 |
 | --- | --- |
 | 前端 | React 19 + React Router + TanStack Query，esbuild 打包 |
 | 服务端 | Node.js ≥ 24（原生 TS 剥离）、Express 5、`node:sqlite` |
-| 模型 | DeepSeek `deepseek-chat`（文案、分镜、SVG 画面、发布文案） |
-| 画面 | LLM 输出原生 SVG → Chrome headless 截图 1080×1920 |
-| 配音 | Edge-TTS（`msedge-tts`，默认 `zh-CN-XiaoxiaoNeural`） |
-| 渲染 | ffmpeg（静止镜头、ASS 字幕、混音、合成 MP4） |
+| 模型 | DeepSeek `deepseek-chat`（文案、分镜、SVG 画面、发布文案）—— **画面也走文本模型，不调用任何文生图接口** |
+| 画面 | LLM 输出原生 SVG → Chrome headless 截图 1080×1920（纯 CPU，无 GPU 依赖） |
+| 配音 | Edge-TTS（`msedge-tts`，默认 `zh-CN-XiaoxiaoNeural`，免费） |
+| 渲染 | ffmpeg（静止镜头、ASS 字幕、混音、合成 MP4，本地免费） |
 
 ## 流水线
 

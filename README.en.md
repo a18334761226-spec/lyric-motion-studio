@@ -21,16 +21,31 @@ The LLM decides the visual form of each shot (infographic, text card, illustrati
 - **Publishing pack**: video, cover, Douyin title, description and hashtags, each copyable from the UI
 - **Daily mode**: topic library (or your own topic / script) → project → render → export package
 
+## Why it's cheap — and needs no GPU
+
+This is a **no image-generation model, no GPU, no cloud rendering** pipeline:
+
+| Step | Common approach | This project |
+| --- | --- | --- |
+| Frames | text-to-image API / Stable Diffusion | **DeepSeek writes complete SVGs**, rasterized with headless Chrome — zero image tokens, zero VRAM |
+| Voice | cloud TTS billed per character | Edge-TTS — **free** |
+| Music | stock / licensed tracks | local procedural synthesis (optional DeepSeek-designed params) — **free** |
+| Rendering | cloud render / subscription editor | local ffmpeg — **free** |
+| Hardware | 8–12 GB VRAM GPU | **CPU only**, a 4–8 GB RAM laptop / mini PC is enough |
+| Cost | a few cents per image × dozens of shots | a 3-minute video ≈ 20–30 **text** calls (tens of thousands of tokens) — usually **a few cents** at `deepseek-chat` pricing |
+
+The trade-off is render time: about 5–10 minutes per 3-minute video on a typical CPU (mostly ffmpeg encoding).
+
 ## Stack
 
 | Layer | Choice |
 | --- | --- |
 | Frontend | React 19, React Router, TanStack Query, esbuild |
 | Backend | Node.js ≥ 24 (native TS stripping), Express 5, `node:sqlite` |
-| Model | DeepSeek `deepseek-chat` (script, storyboard, SVG frames, publishing copy) |
-| Frames | Native SVG → headless Chrome screenshot at 1080×1920 |
-| Voice | Edge-TTS (`msedge-tts`) |
-| Render | ffmpeg (still shots, ASS subtitles, mixing, MP4) |
+| Model | DeepSeek `deepseek-chat` (script, storyboard, SVG frames, publishing copy) — **frames come from a text model, no text-to-image API at all** |
+| Frames | Native SVG → headless Chrome screenshot at 1080×1920 (CPU only, no GPU) |
+| Voice | Edge-TTS (`msedge-tts`, free) |
+| Render | ffmpeg (still shots, ASS subtitles, mixing, MP4 — local and free) |
 
 ## Pipeline
 
