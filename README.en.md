@@ -36,6 +36,19 @@ This is a **no image-generation model, no GPU, no cloud rendering** pipeline:
 
 The trade-off is render time: about 5–10 minutes per 3-minute video on a typical CPU (mostly ffmpeg encoding).
 
+### Cost comparison (estimates)
+
+Basis: **one 3-minute vertical video ≈ 25 shots / ~1,100 Chinese characters**, 30 videos per month.
+
+| Approach | Per video | 30 videos / month | Hardware | Extra costs |
+| --- | --- | --- | --- | --- |
+| Text-to-image API (one per shot, with retries) | 25–75 images × $0.01–0.07 ≈ **$0.3–2.5** | $9–75 | no GPU needed, but pay per image | cloud TTS, stock assets, editor |
+| Local Stable Diffusion | electricity **≈ $0.02–0.05** | ≈ $0.6–1.5 | **8–12 GB VRAM** GPU | model/env setup time |
+| Subscription editor + assets | **$0** (plan $5–13/mo) | $5–13 + manual editing | regular PC | subscription, assets, templates |
+| **This project** | text tokens $0.02–0.08 + power $0.01–0.02 ≈ **$0.03–0.1** | **≈ $1–3** | **CPU only, 4–8 GB RAM** | none (Edge-TTS / ffmpeg / Chrome are free) |
+
+> Ballpark figures based on public list prices; they vary by provider, model version and usage. Only DeepSeek text tokens and local electricity are counted here — no manual review time.
+
 ## Stack
 
 | Layer | Choice |
