@@ -5,8 +5,7 @@ FROM node:24-bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive \
     CHROME_PATH=/usr/bin/chromium \
     HOST=0.0.0.0 \
-    PORT=5099 \
-    NODE_ENV=production
+    PORT=5099
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
