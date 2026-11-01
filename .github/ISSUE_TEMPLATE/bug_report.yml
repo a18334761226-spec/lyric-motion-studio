@@ -1,0 +1,36 @@
+name: Bug report
+description: Something broke — rendering, frames, subtitles, UI, etc.
+title: "[bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you get instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Create a project with ...
+        2. Run the pipeline
+        3. Subtitle is clipped ...
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: Windows 11 / Node 24.x / ffmpeg 9.0 / Chrome 141
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots
+      description: Paste the relevant part of `server.log`, the in-app activity list, or attach a frame.
+    validations:
+      required: false
