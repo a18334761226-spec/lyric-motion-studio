@@ -13,7 +13,8 @@
     "build:server": "node scripts/build-server.mjs",
     "start": "node dist-server/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
-    "smoke": "node --import ./scripts/ts-loader.mjs scripts/smoke.ts"
+    "smoke": "node --import ./scripts/ts-loader.mjs scripts/smoke.ts",
+    "demo": "node --import ./scripts/ts-loader.mjs scripts/demo.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.5",

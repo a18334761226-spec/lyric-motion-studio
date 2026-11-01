@@ -9,6 +9,32 @@ The LLM decides the visual form of each shot (infographic, text card, illustrati
 
 [中文文档](./README.md)
 
+## Samples
+
+<table>
+<tr>
+<td><img src="docs/samples/VpCznblVLp-0.jpg" width="220" alt="Kondratieff cover frame"></td>
+<td><img src="docs/samples/VpCznblVLp-1.jpg" width="220" alt="five waves"></td>
+<td><img src="docs/samples/YXzGfUoZ0Q-1.jpg" width="220" alt="petrodollar infographic"></td>
+</tr>
+<tr>
+<td><img src="docs/samples/YXzGfUoZ0Q-2.jpg" width="220" alt="pricing power"></td>
+<td><img src="docs/samples/FWoNAmUr0M-0.jpg" width="220" alt="sample frame"></td>
+<td><img src="docs/samples/FWoNAmUr0M-1.jpg" width="220" alt="sample frame 2"></td>
+</tr>
+</table>
+
+▶ **60-second demo**: [docs/samples/demo-60s.mp4](docs/samples/demo-60s.mp4)
+
+### One command, no API key
+
+```bash
+npm install
+npm run demo
+# renders a ~35 s sample with bundled frames + Edge-TTS
+# output: data/projects/<new project id>/out/video.mp4
+```
+
 ## Features
 
 - **Multiple inputs**: lyrics (LRC / online search), history topics (auto web research), spoken scripts / themes (≥120 chars preserved verbatim, split into segments)

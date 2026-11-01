@@ -11,6 +11,34 @@ LLM 逐镜决定画面形式（信息图 / 文字卡 / 插画 / 示意图），�
 
 ---
 
+## 样片
+
+<table>
+<tr>
+<td><img src="docs/samples/VpCznblVLp-0.jpg" width="220" alt="康波周期封面帧"></td>
+<td><img src="docs/samples/VpCznblVLp-1.jpg" width="220" alt="五轮长波波形"></td>
+<td><img src="docs/samples/YXzGfUoZ0Q-1.jpg" width="220" alt="石油美元信息图"></td>
+</tr>
+<tr>
+<td><img src="docs/samples/YXzGfUoZ0Q-2.jpg" width="220" alt="定价权示意图"></td>
+<td><img src="docs/samples/FWoNAmUr0M-0.jpg" width="220" alt="康波案例帧"></td>
+<td><img src="docs/samples/FWoNAmUr0M-1.jpg" width="220" alt="康波案例帧 2"></td>
+</tr>
+</table>
+
+▶ **60 秒样片**：[docs/samples/demo-60s.mp4](docs/samples/demo-60s.mp4)（3 支成片各截 20 秒，720p）
+
+### 一条命令看效果（不需要任何 API Key）
+
+```bash
+npm install
+npm run demo
+# 用内置演示画面 + Edge-TTS 配音，渲染出一支约 35 秒成片
+# 产物：data/projects/<新项目 id>/out/video.mp4
+```
+
+演示只跑「配音 → 配乐 → 合成」，跳过需要模型的文案 / 分镜 / 画面阶段，所以开箱即可验证渲染链路。
+
 ## 它能做什么
 
 - **多来源输入**：歌词（LRC / 在线歌词）、历史主题（自动联网检索）、口播稿 / 主题（≥120 字保留原文，逐段成镜）
